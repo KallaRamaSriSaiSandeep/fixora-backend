@@ -13,6 +13,9 @@ RUN apt-get update && \
 COPY .mvn .mvn
 COPY mvnw pom.xml ./
 
+# ✅ Make mvnw executable
+RUN chmod +x mvnw
+
 # Download dependencies
 RUN ./mvnw dependency:go-offline
 
@@ -25,5 +28,5 @@ RUN ./mvnw clean package -DskipTests
 # Expose the port your Spring Boot app runs on
 EXPOSE 9098
 
-# Run the JAR
-CMD ["java", "-jar", "$(find target -name '*-SNAPSHOT.jar' | head -n 1)"]
+# Run the Spring Boot JAR
+CMD ["sh", "-c", "java -jar $(find target -name '*-SNAPSHOT.jar' | head -n 1)"]
